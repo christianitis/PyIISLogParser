@@ -2,12 +2,26 @@ import os
 import evtx
 import json
 
-# TODO: comment your crap christian
+# TODO: comment your crap, christian
 
 EVTX_LOCATION = os.fspath(r"\\DCVM-WEB\c$\Windows\System32\winevt\Logs\Application.evtx")
 
 class Event:
     def __init__(self, jsonstr: str):
+        self.json_object = json.loads(jsonstr)
+        self.level = int(self.json_object['Level'])
+
+    def getseveritystring(self):
+        if self.level == 4:
+            return "Information"
+        elif self.level == 3:
+            return "Warning"
+        elif self.level == 2:
+            return "Error"
+        else:
+            return NotImplementedError()
+
+
 
 
 def initialize():
@@ -22,6 +36,7 @@ def initialize():
 
 
     for record in record_list:
+        pass # TODO implement this, stupid
 
 
 
