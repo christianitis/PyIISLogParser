@@ -7,6 +7,7 @@ import numpy as np
 from exchangelib import attachments
 
 # TODO: All of this needs a major cleanup, it looks like total crap
+import wineventlog
 
 total_requests = 0
 total_errors = 0
@@ -87,12 +88,13 @@ def initialize(cursor, logdays):
     cursor.execute("SELECT AVG(timereq) FROM logtable;")
     avg_time_req = cursor.fetchone()[0]
 
+    top_errors, median = wineventlog.initialize()
+
     credentials = exchangelib.Credentials("autoreports", "slimyFishbowls2")
     config = exchangelib.Configuration(credentials=credentials,
                                        service_endpoint="https://mail.dccabinetry.com/ews/exchange.asmx")
     account = exchangelib.Account(
         primary_smtp_address="amailer@dccabinetry.com", config=config, credentials=credentials)
-
     message = exchangelib.Message()
 
     # TODO clean this up dude lmao
@@ -133,6 +135,14 @@ def initialize(cursor, logdays):
 
     txt += "</ol>" \
            "<img src=\"cid:mosterroneouspages.svg\"><br>" \
+           "<b>Some of the most common error/warning event messages were:</b><br>" \
+           "<small><i>These events occurred more than the median number of occurrences for all error/warning events" \
+           " gathered from the Windows Event Manager log, which was " + median + ".</small></i>" \
+           "<ol>"
+    for event in top_errors:
+        txt += "<li>" + event[0] + " (" + str(event[1]) + " times)</li>"
+
+    txt += "</ol><br>" \
            "<em> If you have any further questions, comments, suggestions, or would like access to the full" \
            " database file; send an email to chollinger@dccabinetry.com.</em><br>" \
            "<strong>Don't reply to this email, because you won't get a response.</strong>" \

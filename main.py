@@ -1,16 +1,15 @@
 import os.path
-from datetime import *
 import sqlite3
-import matplotlib
-import exchangelib
-import pandas
+from datetime import *
 
 import summary
-LOGS_FROM_DAYS = -3  # Go back X amount of days
+
+LOGS_FROM_DAYS = -1  # Go back X amount of days
 LOGDIRECTORY = "//DCVM-WEB/c$/inetpub/logs/LogFiles/W3SVC1/"
 DTSTRING = datetime.now().strftime("%y%m%d")
+CONNECTIONSTRING = os.path.realpath(r"\Users\chollinger\iisparser") + "\\" + DTSTRING + str(datetime.now().second) + ".db"
 
-connection = sqlite3.connect(os.path.realpath(r"\Users\chollinger\iisparser") + "\\" + DTSTRING + str(datetime.now().second) + ".db")  # TODO holy crap lol this sucks
+connection = sqlite3.connect(CONNECTIONSTRING)  # TODO holy crap lol this sucks
 connection.execute("CREATE TABLE logtable (dt TEXT, uri TEXT, status INTEGER, timereq INTEGER);")
 
 currentdate = datetime.now()
