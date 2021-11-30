@@ -4,7 +4,7 @@ from datetime import *
 
 import summary
 
-LOGS_FROM_DAYS = -1  # Go back X amount of days
+LOGS_FROM_DAYS = -2  # Go back X number of days
 LOGDIRECTORY = "//DCVM-WEB/c$/inetpub/logs/LogFiles/W3SVC1/"
 DTSTRING = datetime.now().strftime("%y%m%d")
 CONNECTIONSTRING = os.path.realpath(r"\Users\chollinger\iisparser") + "\\" + DTSTRING + str(datetime.now().second) + ".db"
